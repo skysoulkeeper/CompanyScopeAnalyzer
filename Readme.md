@@ -34,7 +34,7 @@ codecyber.net: $11.18/yr
 ## Installation
 - To run this script, you need to have Python installed on your system along with the necessary packages. You can install the required packages using pip:
 ```
-pip install selenium webdriver-manager
+pip install selenium webdriver-manager PyYAML
 ```
 - Or to install these packages, you can use the following command:
 ```
@@ -44,11 +44,14 @@ pip install -r requirements.txt
 
 ## Usage
 1. __Prepare the Input File:__ Create a text file named company.txt containing the list of company names you want to check. Each company name should be on a new line.
-2. __Set the Configuration:__ In the script, modify the following lines to enable or disable specific checks:
+2. __Set the Configuration:__ In the config.yml, modify the following lines to enable or disable specific checks:
 ```
-check_company_name_availability = "yes"  # "yes" or "no"
-check_company_domains = "yes"  # "yes" or "no"
-domain_zones = [".com", ".net", ".tech"]
+check_company_name_availability: "yes"
+check_company_domains: "yes"
+
+  domain_zones:
+    - ".com"
+    - ".net"
 ```
 3. __Run the Script:__ Execute the script in your Python environment:
 ```
