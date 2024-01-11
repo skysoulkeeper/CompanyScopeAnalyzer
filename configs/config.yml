@@ -1,0 +1,16 @@
+company_name_check_enabled: True
+domain_check_enabled: True
+state_portal_abbr: "NJ"  # Abbreviation for state portal, e.g., NJ
+namecheap_search_url: "https://www.namecheap.com/domains/registration/results/?domain="
+domain_search_limit: 5  # Maximum number of domain zones to check
+domain_zones:
+  - ".com"
+  - ".net"
+  - ".tech"
+input_directory: "data"
+reports_directory: "reports"
+report_filename: "result"
+output_format: xls  # Supported: txt, xml, xls
+webdriver:
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36"
+  implicit_wait_time: 4

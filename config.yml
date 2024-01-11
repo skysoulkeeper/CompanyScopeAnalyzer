@@ -1,8 +1,0 @@
-settings:
-  check_company_name_availability: "yes"
-  check_company_domains: "yes"
-  njportal_url: "https://www.njportal.com/DOR/BusinessNameSearch/Search/Availability"
-  namecheap_url: "https://www.namecheap.com/domains/registration/results/?domain="
-  domain_zones:
-    - ".com"
-    - ".net"
