@@ -1,9 +1,9 @@
-# modules/xls_writer.py
+# modules/reporting/xls_writer.py
 import xlwt
 import logging
 from typing import List
 from pathlib import Path
-from modules.logger import setup_logging
+from utils.logger import setup_logging
 
 # Setting up logging for this module
 setup_logging()
@@ -58,7 +58,7 @@ class ExcelStyles:
         self.orange_style.font = font
 
 
-class ExcelReportGenerator:
+class XLSReportGenerator:
     def __init__(self, domain_zones: List[str]):
         self.domain_zones = domain_zones
         self.wb = xlwt.Workbook()
@@ -140,7 +140,7 @@ class ExcelReportGenerator:
 # Example usage
 if __name__ == "__main__":
     try:
-        report_generator = ExcelReportGenerator([".com", ".net", ".org"])
+        report_generator = XLSReportGenerator([".com", ".net", ".org"])
         example_data = [
             ["Company: Company1", "BNS Status: Available", ".com: $9.99", ".net: Not Available", ".org: $14.99"],
             ["Company: Company2", "BNS Status: Not Available", ".com: Taken", ".net: Taken", ".org: Taken"]

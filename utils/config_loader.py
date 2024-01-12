@@ -1,10 +1,11 @@
-# modules/config_loader.py
+# utils/config_loader.py
 from typing import Dict
 from pathlib import Path
 import yaml
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 class ConfigLoader:
     def __init__(self, config_path: Path):

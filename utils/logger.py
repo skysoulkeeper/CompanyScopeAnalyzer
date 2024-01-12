@@ -1,5 +1,6 @@
-# modules/logger.py
+# utils/logger.py
 import logging
+
 
 def setup_logging():
     logger = logging.getLogger()

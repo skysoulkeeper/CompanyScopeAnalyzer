@@ -1,0 +1,17 @@
+# .editorconfig for Python development
+# Top-most EditorConfig file
+root = true
+
+# Default settings for all files
+[*]
+indent_style = space
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+end_of_line = lf
+insert_final_newline = true
+
+# Python-specific settings
+[*.py]
+max_line_length = 89
+indent_size = 4  # Python convention is 4 spaces for indentation

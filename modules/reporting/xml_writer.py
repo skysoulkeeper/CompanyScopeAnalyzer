@@ -1,14 +1,15 @@
-# modules/xml_writer.py
+# modules/reporting/xml_writer.py
 import xml.etree.ElementTree as ET
 import logging
 from pathlib import Path
 from typing import List
-from modules.logger import setup_logging
+from utils.logger import setup_logging
 
 setup_logging()
 logger = logging.getLogger(__name__)
 
-class XMLWriter:
+
+class XMLReportGenerator:
     def __init__(self, file_name: str):
         self.file_name = file_name
 
@@ -35,8 +36,10 @@ class XMLWriter:
         except Exception as e:
             logger.error(f"Unexpected error while saving XML file: {e}")
 
+
 # Example usage
 if __name__ == "__main__":
-    xml_writer = XMLWriter("report")
-    data = [["Company: Company1", "Status: Active"], ["Company: Company2", "Status: Inactive"]]
+    xml_writer = XMLReportGenerator("report")
+    data = [["Company: Company1", "Status: Active"],
+            ["Company: Company2", "Status: Inactive"]]
     xml_writer.write_to_xml(data)

@@ -1,7 +1,9 @@
 # modules/company_name_formatter.py
 import re
 import logging
+from utils.logger import setup_logging
 
+setup_logging()
 logger = logging.getLogger(__name__)
 
 

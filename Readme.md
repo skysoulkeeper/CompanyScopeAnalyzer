@@ -1,5 +1,6 @@
 
 # CompanyScope Analyzer
+![Script Demonstration](img/ScriptDemonstration.gif)
 
 ## Overview
 This script is designed to automate the process of checking the availability of company names and associated domains. It simplifies the task of verifying these details across various platforms.
@@ -10,27 +11,30 @@ This script is designed to automate the process of checking the availability of 
 - __Configurable Checks:__ Allows enabling or disabling the company name and domain name checks via configuration settings.
 - Generates a report with the availability status of each company and domain name.
 
-## Demonstration
-![Script Demonstration](img/ScriptDemonstration.gif)
-
-## Report Example
+## Supported formats:
+- Input: txt
+- Output: txt, xml, xls, json
+## Report Output Example:
+#### TXT
 ```
-Company: Binary Tech LLC
-BNS Status: Not Available
-binarytech.com: Taken
-binarytech.net: Taken
-
 Company: Tech Dev LLC
 BNS Status: Available
 techdev.com: Taken
 techdev.net: $7,995.00
-
-Company: Code Cyber LLC
-BNS Status: Available
-codecyber.com: Taken
-codecyber.net: $11.18/yr
+techdev.tech: Available at $9.97/yr
 ```
-
+#### Json
+```
+    {
+        "Company Name": "Tech Dev LLC",
+        "BNS Status": "Available",
+        "Domains": {
+            "techdev.com": "Taken",
+            "techdev.net": "Available at $7,995.00",
+            "techdev.tech": "Available at $9.97/yr"
+        }
+    }
+```
 ## Installation
 - To run this script, you need to have Python installed on your system along with the necessary packages. You can install the required packages using pip:
 ```
@@ -57,10 +61,10 @@ domain_zones:
 ```
 python CompanyScopeAnalyzer.py
 ```
-4. __Review the Results:__ Once the script finishes running, check the generated output file in folder __result__ (e.g., __result_08_04_2023.txt__) for the availability status of each company and domain name.
+4. __Review the Results:__ Once the script finishes running, check the generated output file in folder __data/reports__ (e.g., __result_08_04_2023.txt__) for the availability status of each company and domain name.
 
 ## How It Works
-- The script reads company names from the __company.txt__ file.
+- The script reads company names from the __data/input/company.txt__ file.
 - For each company name, it formats the name appropriately for domain checking and state Portal search.
 - If enabled, it checks the company name's availability on state Portal and logs the result as "Available," "Not Available," or "Status Unknown."
 - If domain checking is enabled, the script checks for domain availabilities on NameCheap and logs the results.
@@ -68,18 +72,25 @@ python CompanyScopeAnalyzer.py
 
 
 ## To Do or Not To Do
-- Process lists from CSV, XLS, DOC, etc.
-- Develop a WebUI or GUI.
-- Add support for business name searches in other states with a toggle feature.
-- Generate company names dynamically.
-- Integrate Trade Mark checks.
-- Implement asynchronous processing for faster results.
+- Optimization and Enhancement of Logging.
 - Add proxy support.
+- Implement cflags functionality.
+- Process lists from CSV, XLS, DOC, JSON.
+- Add tests.
+- Code and project structure optimization.
+- Add support for business name searches in other states with a toggle feature.
 - Create bots for Telegram, Slack, etc.
-- Docker support
+- Docker support.
+- Implement asynchronous processing for faster results.
+- Integrate Trade Mark checks.
+- Generate company names dynamically.
+- Develop a WebUI.
+- Develop an API.
 
 However, these enhancements might be considered in the future or perhaps in another lifetime.
 
+## Notes
+- If you are not located in the United States, you may need to use a VPN or Proxy for the script to function correctly.
 ## Development
 - Created in a couple of hours to automate a tedious manual task.
 - Tested on Windows and MacOS with Python version 3.12 and 3.9.
@@ -87,5 +98,4 @@ However, these enhancements might be considered in the future or perhaps in anot
 ## Disclaimer
 This script is provided as-is. Feel free to download, modify, and use it as you see fit.
 
-Have fun! :)
 ---

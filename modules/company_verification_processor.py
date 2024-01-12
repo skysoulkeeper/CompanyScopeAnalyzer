@@ -1,50 +1,58 @@
-# modules/company_domain_validator.py
+# modules/company_verification_processor.py
 import logging
 from pathlib import Path
 from datetime import datetime
 from .webdriver_setup import setup_webdriver
-from .xls_writer import ExcelReportGenerator
-from .xml_writer import XMLWriter
+from modules.reporting.report_generator import ReportGenerator
 from .company_name_formatter import format_company_name_to_domain, format_company_name_for_portal
-from .directory_initializer import initialize_directories
 from .portal_factory import get_portal_class
-from .logger import setup_logging
-from .company_domain_checker import CompanyDomainChecker as DomainChecker
+from utils.logger import setup_logging
+from .namecheap_domain_checker import DomainAvailabilityChecker
+
+from configs.constants import (
+    DEFAULT_STATE_PORTAL_ABBR,
+    DEFAULT_COMPANY_NAME_CHECK_ENABLED,
+    DEFAULT_DOMAIN_CHECK_ENABLED,
+    DEFAULT_DOMAIN_CHECK_LIMIT,
+    DEFAULT_COMPANY_CHECK_LIMIT,
+    DEFAULT_INPUT_DIRECTORY,
+    DEFAULT_REPORTS_DIRECTORY,
+    DEFAULT_OUTPUT_FORMAT,
+    DEFAULT_REPORT_FILENAME
+)
 
 setup_logging()
 logger = logging.getLogger(__name__)
 
 
-class CompanyNameDomainVerifier:
+class CompanyProfileValidator:
     def __init__(self, config):
         self.config = config
-        self.state_portal_abbr = self.config.get('state_portal_abbr', 'NJ')
-        self.company_name_check_enabled = self.config.get('company_name_check_enabled', True)
-        self.domain_check_enabled = self.config.get('domain_check_enabled', True)
+        self.state_portal_abbr = self.config.get('state_portal_abbr', DEFAULT_STATE_PORTAL_ABBR)
+        self.company_name_check_enabled = self.config.get('company_name_check_enabled', DEFAULT_COMPANY_NAME_CHECK_ENABLED)
+        self.domain_check_enabled = self.config.get('domain_check_enabled', DEFAULT_DOMAIN_CHECK_ENABLED)
         self.namecheap_search_url = self.config.get('namecheap_search_url')
-        self.domain_search_limit = self.config.get('domain_search_limit', 2)
+        self.domain_search_limit = self.config.get('domain_check_limit', DEFAULT_DOMAIN_CHECK_LIMIT)
+        self.company_check_limit = self.config.get('company_check_limit', DEFAULT_COMPANY_CHECK_LIMIT)
         self.domain_zones = self.config['domain_zones'][:self.domain_search_limit]
-        self.input_directory = self.config.get('input_directory', 'data')
-        self.reports_directory = self.config.get('reports_directory', 'reports')
+        self.input_directory = self.config.get('input_directory', DEFAULT_INPUT_DIRECTORY)
+        self.reports_directory = self.config.get('reports_directory', DEFAULT_REPORTS_DIRECTORY)
         self.report_filename = Path(
-            self.reports_directory) / f"{self.config.get('report_filename', 'result')}_{datetime.now().strftime('%d_%m_%Y')}"
-        self.output_format = self.config.get('output_format', 'xls')
-        self.enable_logging_to_file = self.config.get('enable_logging_to_file', False)
+            self.reports_directory) / f"{self.config.get('report_filename', DEFAULT_REPORT_FILENAME)}_{datetime.now().strftime('%d_%m_%Y')}"
+        self.output_format = self.config.get('output_format', DEFAULT_OUTPUT_FORMAT)
 
         self.driver = setup_webdriver(config)
-        #        self.domain_checker = DomainChecker(self.driver, config['domain_selectors'])
-        initialize_directories(self.reports_directory)
         self.results = []
-        self.domain_checker = DomainChecker(self.driver, self.namecheap_search_url)
+        self.domain_checker = DomainAvailabilityChecker(self.driver, self.namecheap_search_url)
 
     def run(self):
         company_file_path = Path(self.input_directory) / 'company.txt'
-        PortalClass = get_portal_class(self.state_portal_abbr)
-        portal = PortalClass(self.driver)
+        portal_class = get_portal_class(self.state_portal_abbr)
+        portal = portal_class(self.driver)
 
         try:
             with open(company_file_path, 'r') as file:
-                companies = file.readlines()
+                companies = file.readlines()[:self.company_check_limit]
             lines_count = len(companies)
             logger.info("Number of lines in the company file: %s", lines_count)
 
@@ -79,20 +87,8 @@ class CompanyNameDomainVerifier:
             self.close()
 
     def save_report(self):
-        report_filename_str = str(self.report_filename)
-        logger.info("Report file saving is starting.")
-        if self.output_format.lower() == 'xls':
-            report_generator = ExcelReportGenerator(self.domain_zones)
-            report_generator.write_report(report_filename_str, self.results)
-        elif self.output_format.lower() == 'xml':
-            xml_writer = XMLWriter(report_filename_str)
-            xml_writer.write_to_xml(self.results)
-        elif self.output_format.lower() == 'txt':
-            with open(f"{report_filename_str}.txt", 'w', encoding='utf-8') as result_file:
-                for result_lines in self.results:
-                    for line in result_lines:
-                        result_file.write(line + "\n")
-            logger.info(f"Generated report file saved: {report_filename_str}.txt")
+        report_generator = ReportGenerator(self.config, self.results)
+        report_generator.generate_report()
 
     def close(self):
         try:

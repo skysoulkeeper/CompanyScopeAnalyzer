@@ -1,16 +1,19 @@
+# configs/config.yml
 company_name_check_enabled: True
 domain_check_enabled: True
 state_portal_abbr: "NJ"  # Abbreviation for state portal, e.g., NJ
 namecheap_search_url: "https://www.namecheap.com/domains/registration/results/?domain="
-domain_search_limit: 5  # Maximum number of domain zones to check
+domain_check_limit: 5  # Maximum number of domain zones to be checked
 domain_zones:
   - ".com"
   - ".net"
   - ".tech"
-input_directory: "data"
-reports_directory: "reports"
+company_check_limit: 2 # Maximum number of companies from input file to be checked
+input_directory: "data/input"
+reports_directory: "data/reports"
+logs_directory: "data/logs"
 report_filename: "result"
-output_format: xls  # Supported: txt, xml, xls
+output_format: xls  # Supported: txt, xml, xls, json
 webdriver:
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36"
   implicit_wait_time: 4

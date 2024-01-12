@@ -2,9 +2,11 @@
 from pathlib import Path
 import logging
 import time
-from modules.logger import setup_logging
-from modules.config_loader import ConfigLoader
-from modules.company_domain_validator import CompanyNameDomainVerifier
+from utils.logger import setup_logging
+from utils.config_loader import ConfigLoader
+from utils.directory_initializer import initialize_directories
+from modules.company_verification_processor import CompanyProfileValidator
+
 
 def main() -> None:
     setup_logging()
@@ -14,7 +16,13 @@ def main() -> None:
     try:
         config_loader = ConfigLoader(Path('configs/config.yml'))
         config = config_loader.load_config()
-        verifier = CompanyNameDomainVerifier(config)
+        directories_to_create = [
+            config.get('input_directory'),
+            config.get('reports_directory'),
+            config.get('logs_directory')
+        ]
+        initialize_directories(directories_to_create)
+        verifier = CompanyProfileValidator(config)
         verifier.run()  # Run the verifier process
     except Exception as e:
         logger.exception(f"Error occurred during execution: {e}")
@@ -25,6 +33,6 @@ def main() -> None:
         formatted_time = time.strftime("%H:%M:%S", time.gmtime(elapsed_time))
         logger.info(f"Total execution time: {formatted_time}")
 
+
 if __name__ == "__main__":
     main()
-

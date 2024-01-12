@@ -13,6 +13,14 @@ def setup_webdriver(config: Dict[str, any]) -> webdriver.Chrome:
 
     options = Options()
     options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-cache")
+    options.add_argument("--disable-cookies")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--headless")
+    options.add_argument("--blink-settings=imagesEnabled=false")
+    options.add_argument("accept-language=en-US,en;q=0.9")
+    options.add_argument("accept-encoding=gzip, deflate, br")
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
 

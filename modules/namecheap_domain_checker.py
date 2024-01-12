@@ -1,4 +1,4 @@
-# modules/company_domain_checker.py
+# modules/namecheap_domain_checker.py
 import logging
 import time
 
@@ -8,13 +8,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-# Новые константы селекторов, основанные на старом коде
 SEARCH_INPUT = 'input#search-query'
 SUBMIT_BUTTON = 'input[type="submit"]'
-# Динамические селекторы, базирующиеся на расширении домена
-# DOMAIN_UNAVAILABLE и DOMAIN_AVAILABLE будут формироваться динамически в методе
 
-class CompanyDomainChecker:
+
+class DomainAvailabilityChecker:
     def __init__(self, driver, namecheap_url):
         self.driver = driver
         self.namecheap_url = namecheap_url
