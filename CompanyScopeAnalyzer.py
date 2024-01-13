@@ -1,21 +1,20 @@
 # CompanyScopeAnalyzer.py
 from pathlib import Path
-import logging
 import time
-from utils.logger import setup_logging
+from utils.logger import setup_logger, logger
 from utils.config_loader import ConfigLoader
 from utils.directory_initializer import initialize_directories
 from modules.company_verification_processor import CompanyProfileValidator
 
 
 def main() -> None:
-    setup_logging()
-    logger = logging.getLogger(__name__)
     verifier = None
     start_time = time.time()  # Start timing the execution
+
+    config_loader = ConfigLoader(Path('configs/config.yml'))
+    config = config_loader.load_config()
+    setup_logger(config.get('logging', {}))
     try:
-        config_loader = ConfigLoader(Path('configs/config.yml'))
-        config = config_loader.load_config()
         directories_to_create = [
             config.get('input_directory'),
             config.get('reports_directory'),

@@ -1,13 +1,8 @@
 # modules/reporting/xls_writer.py
 import xlwt
-import logging
 from typing import List
 from pathlib import Path
-from utils.logger import setup_logging
-
-# Setting up logging for this module
-setup_logging()
-logger = logging.getLogger(__name__)
+from utils.logger import logger
 
 
 class ExcelStyles:
@@ -39,10 +34,12 @@ class ExcelStyles:
         header_font.height = 17 * 20
 
         # Define styles
-        self.header_style = xlwt.easyxf('borders: left thin, right thin, top thin, bottom thin;')
+        self.header_style = xlwt.easyxf(
+            'borders: left thin, right thin, top thin, bottom thin;')
         self.header_style.font = header_font
 
-        self.normal_style = xlwt.easyxf('borders: left thin, right thin, top thin, bottom thin;')
+        self.normal_style = xlwt.easyxf(
+            'borders: left thin, right thin, top thin, bottom thin;')
         self.normal_style.font = font
 
         self.red_style = xlwt.easyxf(
@@ -59,15 +56,16 @@ class ExcelStyles:
 
 
 class XLSReportGenerator:
-    def __init__(self, domain_zones: List[str]):
+    def __init__(self, domain_zones: List[str], state_abbr: str):
         self.domain_zones = domain_zones
+        self.state_abbr = state_abbr
         self.wb = xlwt.Workbook()
         self.styles = ExcelStyles(self.wb)  # Passing workbook to styles
 
     def _create_sheet(self):
         try:
             worksheet = self.wb.add_sheet('Results')
-            headers = ["Company Name", "BNS Status"]
+            headers = ["Company Name", "State", "BNS Status"]
             for zone in self.domain_zones:
                 headers.extend([zone, "Status"])
             for col_num, header in enumerate(headers):
@@ -87,6 +85,9 @@ class XLSReportGenerator:
                 # Write Company Name
                 company_name = result_lines[0].replace('Company: ', '')
                 worksheet.write(row_num, col_num, company_name, self.styles.normal_style)
+                col_num += 1
+
+                worksheet.write(row_num, col_num, self.state_abbr, self.styles.normal_style)
                 col_num += 1
 
                 # Write BNS Status without prefix
@@ -124,7 +125,8 @@ class XLSReportGenerator:
             with report_path.open(mode='wb') as file:
                 self.wb.save(file)
         except PermissionError:
-            logger.error(f"Permission denied: Unable to save the workbook to {report_name}")
+            logger.error(
+                f"Permission denied: Unable to save the workbook to {report_name}")
         except IOError as e:
             logger.error(f"IO Error occurred: {e}")
         except Exception as e:
@@ -142,8 +144,10 @@ if __name__ == "__main__":
     try:
         report_generator = XLSReportGenerator([".com", ".net", ".org"])
         example_data = [
-            ["Company: Company1", "BNS Status: Available", ".com: $9.99", ".net: Not Available", ".org: $14.99"],
-            ["Company: Company2", "BNS Status: Not Available", ".com: Taken", ".net: Taken", ".org: Taken"]
+            ["Company: Company1", "BNS Status: Available", ".com: $9.99",
+             ".net: Not Available", ".org: $14.99"],
+            ["Company: Company2", "BNS Status: Not Available", ".com: Taken",
+             ".net: Taken", ".org: Taken"]
         ]
         report_generator.write_report("example_report", example_data)
         logger.info("Report generated successfully.")

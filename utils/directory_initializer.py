@@ -1,9 +1,8 @@
 # utils/directory_initializer.py
-import logging
+from utils.logger import logger
 from pathlib import Path
 from typing import List
 
-logger = logging.getLogger(__name__)
 
 
 def initialize_directories(directories: List[str]) -> None:

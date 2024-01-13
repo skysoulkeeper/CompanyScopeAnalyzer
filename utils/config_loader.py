@@ -2,9 +2,7 @@
 from typing import Dict
 from pathlib import Path
 import yaml
-import logging
-
-logger = logging.getLogger(__name__)
+from utils.logger import logger
 
 
 class ConfigLoader:

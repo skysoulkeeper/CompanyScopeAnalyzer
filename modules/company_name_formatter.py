@@ -1,10 +1,6 @@
 # modules/company_name_formatter.py
 import re
-import logging
-from utils.logger import setup_logging
-
-setup_logging()
-logger = logging.getLogger(__name__)
+from utils.logger import logger
 
 
 def format_company_name_to_domain(name: str) -> str:

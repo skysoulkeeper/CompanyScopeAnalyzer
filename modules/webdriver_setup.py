@@ -1,5 +1,6 @@
 # modules/webdriver_setup.py
-import logging
+import json
+from utils.logger import logger
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -8,8 +9,13 @@ from typing import Dict
 
 
 def setup_webdriver(config: Dict[str, any]) -> webdriver.Chrome:
-    logger = logging.getLogger(__name__)
-    logger.info("Setting up WebDriver")
+    # Extract proxy and webdriver configuration
+    proxy_settings = config.get('proxy_settings', {})
+    webdriver_config = config.get('webdriver', {})
+
+    # Log the proxy and webdriver configuration before setting up the WebDriver
+    logger.info("Proxy Settings: {}", json.dumps(proxy_settings))
+    logger.info("Webdriver Configuration: {}", json.dumps(webdriver_config))
 
     options = Options()
     options.add_argument("--disable-blink-features=AutomationControlled")
@@ -35,6 +41,21 @@ def setup_webdriver(config: Dict[str, any]) -> webdriver.Chrome:
         raise KeyError("Missing required WebDriver configuration parameters.")
 
     options.add_argument(f"user-agent={user_agent}")
+
+    # Proxy Configuration
+    if 'proxy_settings' in config and config['proxy_settings'].get('proxy_enabled'):
+        proxy_host = config['proxy_settings'].get('proxy_host')
+        proxy_port = config['proxy_settings'].get('proxy_port')
+        proxy_username = config['proxy_settings'].get('proxy_username')
+        proxy_password = config['proxy_settings'].get('proxy_password')
+
+        if proxy_host and proxy_port:
+            proxy_str = f"{proxy_host}:{proxy_port}"
+
+            if proxy_username and proxy_password:
+                proxy_str = f"{proxy_username}:{proxy_password}@{proxy_str}"
+
+            options.add_argument(f'--proxy-server=http://{proxy_str}')
 
     try:
         service = Service(ChromeDriverManager().install())

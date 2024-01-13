@@ -1,12 +1,11 @@
 # modules/company_verification_processor.py
-import logging
 from pathlib import Path
 from datetime import datetime
 from .webdriver_setup import setup_webdriver
 from modules.reporting.report_generator import ReportGenerator
 from .company_name_formatter import format_company_name_to_domain, format_company_name_for_portal
 from .portal_factory import get_portal_class
-from utils.logger import setup_logging
+from utils.logger import logger
 from .namecheap_domain_checker import DomainAvailabilityChecker
 
 from configs.constants import (
@@ -20,9 +19,6 @@ from configs.constants import (
     DEFAULT_OUTPUT_FORMAT,
     DEFAULT_REPORT_FILENAME
 )
-
-setup_logging()
-logger = logging.getLogger(__name__)
 
 
 class CompanyProfileValidator:
@@ -54,11 +50,11 @@ class CompanyProfileValidator:
             with open(company_file_path, 'r') as file:
                 companies = file.readlines()[:self.company_check_limit]
             lines_count = len(companies)
-            logger.info("Number of lines in the company file: %s", lines_count)
+            logger.info("The number of companies to be processed from the file is: {}", lines_count)
 
             for company in companies:
                 company_name = company.strip()
-                logger.info("Starting processing for company: %s", company_name)
+                logger.info("Starting processing for company: {}", company_name)
 
                 formatted_name = format_company_name_to_domain(company_name)
                 portal_formatted_name = format_company_name_for_portal(company_name)
@@ -66,7 +62,7 @@ class CompanyProfileValidator:
 
                 if self.company_name_check_enabled:
                     bns_status = portal.check_availability(portal_formatted_name)
-                    result_lines.append(f"BNS Status: {bns_status}")
+                    result_lines.append(f"BNS status: {bns_status}")
 
                 if self.domain_check_enabled:
                     for domain_extension in self.domain_zones:
@@ -75,19 +71,20 @@ class CompanyProfileValidator:
                         result_lines.append(f"{full_domain}: {domain_status}")
 
                 self.results.append(result_lines)
-                logger.info("Finished processing for company: %s", company_name)
+                logger.info("Finished processing for company: {}", company_name)
 
             self.save_report()
         except FileNotFoundError:
             logger.error(f"File {company_file_path} not found.")
         except Exception as e:
-            logger.error("Unexpected error during processing: %s", e)
+            logger.error("Unexpected error during processing: {}", e)
             logger.exception("Detailed exception information:")
         finally:
             self.close()
 
     def save_report(self):
-        report_generator = ReportGenerator(self.config, self.results)
+        state_abbr = self.config.get('state_portal_abbr', 'Unknown')
+        report_generator = ReportGenerator(self.config, self.results, state_abbr)
         report_generator.generate_report()
 
     def close(self):

@@ -1,19 +1,42 @@
 # configs/config.yml
-company_name_check_enabled: True
-domain_check_enabled: True
-state_portal_abbr: "NJ"  # Abbreviation for state portal, e.g., NJ
+
+# Basic Application Settings
+company_name_check_enabled: True    # Enable or disable company name check
+domain_check_enabled: True          # Enable or disable domain check
+state_portal_abbr: "NJ"             # Abbreviation for state portal, e.g., NJ
 namecheap_search_url: "https://www.namecheap.com/domains/registration/results/?domain="
-domain_check_limit: 5  # Maximum number of domain zones to be checked
+domain_check_limit: 5               # Maximum number of domain zones to be checked
 domain_zones:
   - ".com"
   - ".net"
   - ".tech"
-company_check_limit: 2 # Maximum number of companies from input file to be checked
-input_directory: "data/input"
-reports_directory: "data/reports"
-logs_directory: "data/logs"
-report_filename: "result"
-output_format: xls  # Supported: txt, xml, xls, json
+company_check_limit: 3              # Maximum number of companies from input file to be checked
+
+# Directories Settings
+input_directory: "data/input"       # Directory path for input data
+reports_directory: "data/reports"   # Directory path for generated reports
+logs_directory: "data/logs"         # Directory path for log files
+
+# Report Settings
+report_filename: "result"           # Prefix for report filenames
+output_format: xls                  # Output format for reports (supported: xls, csv, json, sql, xml, txt)
+
+# Proxy Settings
+proxy_settings:
+  proxy_enabled: False              # Enable or disable proxy usage
+  proxy_host: ""                    # Proxy host address
+  proxy_port: 8080                  # Proxy port
+  proxy_username: ""                # Proxy username (if authentication is required)
+  proxy_password: ""                # Proxy password (if authentication is required)
+
+# Webdriver configuration
 webdriver:
   user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36"
-  implicit_wait_time: 4
+  implicit_wait_time: 4             # Implicit wait time in seconds
+
+# Logging configuration
+logging:
+  log_to_file: False                # Enable or disable logging to a file
+  log_file_size: "10MB"             # Maximum size of log files (e.g., "10MB")
+  log_backup_count: 3               # Number of log file backups to keep
+  log_date_sdt: "EU"                # Date format for log entries ("EU" for D/M/Y format or "US" for Y/M/D format)

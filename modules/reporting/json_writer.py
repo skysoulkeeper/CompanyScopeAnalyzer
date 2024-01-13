@@ -1,11 +1,7 @@
 # modules/reporting/json_writer.py
 import json
-import logging
 from pathlib import Path
-from utils.logger import setup_logging
-
-setup_logging()
-logger = logging.getLogger(__name__)
+from utils.logger import logger
 
 
 class JSONReportGenerator:

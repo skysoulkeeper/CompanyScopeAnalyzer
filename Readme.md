@@ -9,25 +9,26 @@ This script is designed to automate the process of checking the availability of 
 - __Company Name Availability Check:__ Determines whether a company name is available or already taken on state Portal.
 - __Domain Name Availability Check:__ Checks the availability of any domains for the company names on NameCheap.
 - __Configurable Checks:__ Allows enabling or disabling the company name and domain name checks via configuration settings.
+- __Proxy Support:__ Provides the ability to configure and use proxy settings for enhanced web scraping and privacy.
 - Generates a report with the availability status of each company and domain name.
 
 ## Supported formats:
 - Input: txt
-- Output: txt, xml, xls, json
+- Output: xls, xml, json, csv, sql, txt
 ## Report Output Example:
-#### TXT
-```
-Company: Tech Dev LLC
-BNS Status: Available
-techdev.com: Taken
-techdev.net: $7,995.00
-techdev.tech: Available at $9.97/yr
-```
-#### Json
+
+#### xls
+![xlsDemonstration.png](img%2FxlsDemonstration.png)
+
+#### xml
+![xmlDemonstration.png](img%2FxmlDemonstration.png)
+
+#### json
 ```
     {
-        "Company Name": "Tech Dev LLC",
-        "BNS Status": "Available",
+        "Company": "Tech Dev LLC",
+        "State": "NJ",
+        "BNS status": "Available",
         "Domains": {
             "techdev.com": "Taken",
             "techdev.net": "Available at $7,995.00",
@@ -35,10 +36,35 @@ techdev.tech: Available at $9.97/yr
         }
     }
 ```
+
+#### csv
+```
+Company,State,BNS status,.com,.net,.tech
+Binary Tech LLC,NJ,Not Available,Taken,Taken,Available at $9.97/yr
+Tech Dev LLC,NJ,Available,Taken,"Available at $7,995.00",Available at $9.97/yr
+```
+
+#### sql
+```
+INSERT INTO companies (name, state, BNS, com, net, tech) VALUES ('Binary Tech LLC', 'NJ', 'Not Available', 'Taken', 'Taken', 'Available at $9.97/yr');
+INSERT INTO companies (name, state, BNS, com, net, tech) VALUES ('Tech Dev LLC', 'NJ', 'Available', 'Taken', 'Available at $7,995.00', 'Available at $9.97/yr');
+INSERT INTO companies (name, state, BNS, com, net, tech) VALUES ('Code Cyber LLC', 'NJ', 'Available', 'Taken', 'Available at $11.18/yr', 'Available at $9.97/yr');
+```
+
+#### txt
+```
+Company: Tech Dev LLC
+State: NJ
+BNS status: Available
+techdev.com: Taken
+techdev.net: Available at $7,995.00
+techdev.tech: Available at $9.97/yr
+```
+
 ## Installation
 - To run this script, you need to have Python installed on your system along with the necessary packages. You can install the required packages using pip:
 ```
-pip install selenium webdriver-manager PyYAML xlwt
+pip install selenium webdriver-manager PyYAML xlwt loguru
 ```
 - Or to install these packages, you can use the following command:
 ```
@@ -72,8 +98,6 @@ python CompanyScopeAnalyzer.py
 
 
 ## To Do or Not To Do
-- Optimization and Enhancement of Logging.
-- Add proxy support.
 - Implement cflags functionality.
 - Process lists from CSV, XLS, DOC, JSON.
 - Add tests.
