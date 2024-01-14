@@ -5,12 +5,12 @@ company_name_check_enabled: True    # Enable or disable company name check
 domain_check_enabled: True          # Enable or disable domain check
 state_portal_abbr: "NJ"             # Abbreviation for state portal, e.g., NJ
 namecheap_search_url: "https://www.namecheap.com/domains/registration/results/?domain="
-domain_check_limit: 5               # Maximum number of domain zones to be checked
+domain_check_limit: 1               # Maximum number of domain zones to be checked
 domain_zones:
   - ".com"
   - ".net"
   - ".tech"
-company_check_limit: 3              # Maximum number of companies from input file to be checked
+company_check_limit: 1              # Maximum number of companies from input file to be checked
 
 # Directories Settings
 input_directory: "data/input"       # Directory path for input data
@@ -19,7 +19,7 @@ logs_directory: "data/logs"         # Directory path for log files
 
 # Report Settings
 report_filename: "result"           # Prefix for report filenames
-output_format: xls                  # Output format for reports (supported: xls, csv, json, sql, xml, txt)
+output_format: sql                  # Output format for reports (supported: xls, csv, json, sql, xml, txt)
 
 # Proxy Settings
 proxy_settings:

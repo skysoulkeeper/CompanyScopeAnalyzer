@@ -6,6 +6,7 @@ from modules.reporting.xls_writer import XLSReportGenerator
 from modules.reporting.xml_writer import XMLReportGenerator
 from modules.reporting.json_writer import JSONReportGenerator
 from modules.reporting.csv_writer import CSVReportGenerator
+from modules.reporting.sql_writer import SQLReportGenerator
 from utils.logger import logger
 
 
@@ -55,7 +56,7 @@ class ReportGenerator:
             csv_filename = f"{str(self.report_filename)}.csv"
             state = self.config_data.get('state_portal_abbr', 'Unknown')
             headers = ["Company", "State", "BNS Status"] + self.config_data.get(
-                'domain_zones', [])  # Заголовки для CSV
+                'domain_zones', [])
             csv_report_generator = CSVReportGenerator(
                 self.config_data.get('domain_zones', []), state)
             csv_report_generator.generate_csv_report(csv_filename, self.result_data,
@@ -90,33 +91,9 @@ class ReportGenerator:
         try:
             logger.info("Generating SQL report.")
             sql_filename = f"{str(self.report_filename)}.sql"
-
-            with open(sql_filename, 'w', encoding='utf-8') as file:
-                for result_lines in self.result_data:
-                    # Разделение данных по колонкам
-                    company_name = result_lines[0].split(': ', 1)[1]
-                    bns_status = result_lines[1].split(': ', 1)[1]
-                    domain_data = result_lines[2:]
-
-                    # Сформировать список значений
-                    values = [f"'{company_name}'", f"'{self.state_abbr}'",
-                              f"'{bns_status}'"]
-                    for domain_info in domain_data:
-                        domain_zone, status = domain_info.split(': ')
-                        domain_zone = domain_zone.split('.')[
-                            -1]  # Получение только доменной зоны
-                        values.append(f"'{status}'")
-
-                    # Сформировать список колонок
-                    columns = ['name', 'state', 'BNS'] + [domain.split('.')[-1] for
-                                                          domain, _ in
-                                                          [d.split(': ') for d in
-                                                           domain_data]]
-
-                    # Создать SQL-запрос
-                    sql_statement = f"INSERT INTO companies ({', '.join(columns)}) VALUES ({', '.join(values)})"
-                    file.write(sql_statement + ";\n")
-                file.write("\n")
+            state = self.config_data.get('state_portal_abbr', 'Unknown')
+            sql_report_generator = SQLReportGenerator(state)
+            sql_report_generator.generate_sql_report(sql_filename, self.result_data)
         except Exception as e:
             logger.error(f"Error generating SQL report: {e}")
             raise
