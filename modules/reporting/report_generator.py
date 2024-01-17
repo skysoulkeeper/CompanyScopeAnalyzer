@@ -10,19 +10,22 @@ from modules.reporting.sql_writer import SQLReportGenerator
 from utils.logger import logger
 
 
+# Define a class for generating reports in various formats
 class ReportGenerator:
     def __init__(self, config_params: Dict[str, any], results_list: List[List[str]],
-                 state_abbr: str):
+                 state_abbr_param: str):
         self.config_data = config_params
-        self.state_abbr = state_abbr
+        self.state_abbr = state_abbr_param
         self.result_data = results_list
         self.report_filename = Path(self.config_data.get('reports_directory',
                                                          'reports')) / f"{self.config_data.get('report_filename', 'result')}_{datetime.now().strftime('%d_%m_%Y')}"
 
     def generate_report(self) -> None:
+        # Determine the output format for the report
         report_format = self.config_data.get('output_format', 'txt').lower()
         logger.info(f"Generating report in {report_format} format.")
 
+        # Define methods for generating reports in different formats
         report_methods = {
             'xls': self._generate_xls_report,
             'xml': self._generate_xml_report,
@@ -32,6 +35,7 @@ class ReportGenerator:
             'sql': self._generate_sql_report
         }
 
+        # Get the appropriate report generation method based on the format
         generate_method = report_methods.get(report_format, self._generate_txt_report)
         try:
             generate_method()
@@ -42,9 +46,9 @@ class ReportGenerator:
     def _generate_xls_report(self):
         try:
             logger.info("Generating XLS report.")
-            state_abbr = self.config_data.get('state_portal_abbr', 'Unknown')
+            state_abbr_param = self.config_data.get('state_portal_abbr', 'Unknown')
             report_generator = XLSReportGenerator(self.config_data['domain_zones'],
-                                                  state_abbr)
+                                                  state_abbr_param)
             report_generator.write_report(str(self.report_filename), self.result_data)
         except Exception as e:
             logger.error(f"Error generating XLS report: {e}")
@@ -136,7 +140,9 @@ class ReportGenerator:
 # Example usage
 if __name__ == "__main__":
     config_data = {}
-    result_data = []
+    result_data = []  # Your result data goes here
     state_abbr = config_data.get('state_portal_abbr', 'Unknown')
-    report_gen = ReportGenerator(config_data, result_data)
+    report_gen = ReportGenerator(config_data, result_data, state_abbr)
     report_gen.generate_report()
+
+

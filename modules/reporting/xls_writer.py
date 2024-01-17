@@ -5,6 +5,7 @@ from pathlib import Path
 from utils.logger import logger
 
 
+# Define a class for managing custom Excel styles
 class ExcelStyles:
     def __init__(self, workbook):
         self.wb = workbook
@@ -12,7 +13,7 @@ class ExcelStyles:
         self._setup_styles()
 
     def _setup_custom_colors(self):
-        # Define custom colors
+        # Define custom colors and associate them with custom names
         xlwt.add_palette_colour("custom_light_green", 0x21)
         self.wb.set_colour_RGB(0x21, 155, 194, 128)
 
@@ -23,17 +24,17 @@ class ExcelStyles:
         self.wb.set_colour_RGB(0x23, 255, 207, 160)
 
     def _setup_styles(self):
-        # Define font styles
+        # Define font styles for Excel cells
         font = xlwt.Font()
         font.name = 'Times New Roman'
-        font.height = 15 * 20
+        font.height = 15 * 20 # Font size in 1/20th of a point
 
         header_font = xlwt.Font()
         header_font.name = 'Times New Roman'
         header_font.bold = True
-        header_font.height = 17 * 20
+        header_font.height = 17 * 20 # Font size for headers
 
-        # Define styles
+        # Define cell styles based on custom colors and fonts
         self.header_style = xlwt.easyxf(
             'borders: left thin, right thin, top thin, bottom thin;')
         self.header_style.font = header_font
@@ -55,22 +56,29 @@ class ExcelStyles:
         self.orange_style.font = font
 
 
+# Define a class for generating Excel reports
 class XLSReportGenerator:
     def __init__(self, domain_zones: List[str], state_abbr: str):
         self.domain_zones = domain_zones
         self.state_abbr = state_abbr
-        self.wb = xlwt.Workbook()
-        self.styles = ExcelStyles(self.wb)  # Passing workbook to styles
+        self.wb = xlwt.Workbook() # Create a new Excel workbook
+        self.styles = ExcelStyles(self.wb)  # Initialize custom styles for the workbook
 
     def _create_sheet(self):
         try:
+            # Create a new worksheet in the workbook
             worksheet = self.wb.add_sheet('Results')
             headers = ["Company Name", "State", "BNS Status"]
+
+            # Add headers for each domain zone
             for zone in self.domain_zones:
                 headers.extend([zone, "Status"])
+
+            # Write headers to the worksheet and set column widths
             for col_num, header in enumerate(headers):
                 worksheet.write(0, col_num, header, self.styles.header_style)
-                worksheet.col(col_num).width = 256 * 20
+                worksheet.col(col_num).width = 256 * 20 # Set column width (in 1/256th of the width of the default font)
+
             return worksheet, headers
         except Exception as e:
             logger.error(f"Error during sheet creation: {e}")

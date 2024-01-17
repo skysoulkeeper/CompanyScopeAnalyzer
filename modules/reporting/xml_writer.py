@@ -18,7 +18,6 @@ class XMLReportGenerator:
             company_elem = ET.SubElement(root, "Company")
             for line in result_lines:
                 try:
-                    # Если в строке нет двоеточия, она должна быть значением доменного имени
                     if ":" not in line:
                         tag = "Domain"
                         text = line
@@ -26,11 +25,10 @@ class XMLReportGenerator:
                         parts = line.split(": ", 1)
                         tag = parts[0].strip()
                         text = parts[1].strip() if len(parts) > 1 else ""
-                        # Очистка тега и текста от лишних слов
-                        tag = tag.replace("Company", "").replace("BNS Status", "BNSStatus")
+                        tag = tag.replace("Company", "").replace("BNS Status",
+                                                                 "BNSStatus")
                         text = text.replace("Company: ", "").replace("BNS status: ", "")
 
-                    # Создание и добавление элемента в XML
                     ET.SubElement(company_elem, tag or "Name").text = text
                 except ValueError as e:
                     logger.error(f"Error in data format '{line}': {e}")
@@ -44,7 +42,6 @@ class XMLReportGenerator:
             logger.error(f"Error while generating XML: {e}")
         except Exception as e:
             logger.error(f"Unexpected error while saving XML file: {e}")
-
 
 
 # Example usage

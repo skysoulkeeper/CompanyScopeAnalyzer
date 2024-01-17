@@ -21,8 +21,10 @@ from configs.constants import (
 )
 
 
+# Define a class for processing company profile validation
 class CompanyProfileValidator:
     def __init__(self, config):
+        # Initialize the validator with configuration settings
         self.config = config
         self.state_portal_abbr = self.config.get('state_portal_abbr', DEFAULT_STATE_PORTAL_ABBR)
         self.company_name_check_enabled = self.config.get('company_name_check_enabled', DEFAULT_COMPANY_NAME_CHECK_ENABLED)
@@ -37,17 +39,21 @@ class CompanyProfileValidator:
             self.reports_directory) / f"{self.config.get('report_filename', DEFAULT_REPORT_FILENAME)}_{datetime.now().strftime('%d_%m_%Y')}"
         self.output_format = self.config.get('output_format', DEFAULT_OUTPUT_FORMAT)
 
+        # Initialize a WebDriver instance using the setup_webdriver function
         self.driver = setup_webdriver(config)
         self.results = []
         self.domain_checker = DomainAvailabilityChecker(self.driver, self.namecheap_search_url)
 
     def run(self):
+        # Define the path to the input file containing company names
         company_file_path = Path(self.input_directory) / 'company.txt'
         portal_class = get_portal_class(self.state_portal_abbr)
+        # Get the portal class based on the state abbreviation
         portal = portal_class(self.driver)
 
         try:
             with open(company_file_path, 'r') as file:
+                # Read company names from the file (up to the specified limit)
                 companies = file.readlines()[:self.company_check_limit]
             lines_count = len(companies)
             logger.info("The number of companies to be processed from the file is: {}", lines_count)
@@ -56,23 +62,27 @@ class CompanyProfileValidator:
                 company_name = company.strip()
                 logger.info("Starting processing for company: {}", company_name)
 
+                # Format the company name for domain and portal
                 formatted_name = format_company_name_to_domain(company_name)
                 portal_formatted_name = format_company_name_for_portal(company_name)
                 result_lines = [f"Company: {company_name}"]
 
                 if self.company_name_check_enabled:
+                    # Check BNS availability for the formatted company name
                     bns_status = portal.check_availability(portal_formatted_name)
                     result_lines.append(f"BNS status: {bns_status}")
 
                 if self.domain_check_enabled:
                     for domain_extension in self.domain_zones:
                         full_domain = formatted_name + domain_extension
+                        # Check domain availability using DomainAvailabilityChecker
                         domain_status = self.domain_checker.check_domain_status(full_domain)
                         result_lines.append(f"{full_domain}: {domain_status}")
 
                 self.results.append(result_lines)
                 logger.info("Finished processing for company: {}", company_name)
 
+            # Save the generated report
             self.save_report()
         except FileNotFoundError:
             logger.error(f"File {company_file_path} not found.")
@@ -80,15 +90,19 @@ class CompanyProfileValidator:
             logger.error("Unexpected error during processing: {}", e)
             logger.exception("Detailed exception information:")
         finally:
+            # Close the WebDriver
             self.close()
 
     def save_report(self):
+        # Get the state abbreviation for the report
         state_abbr = self.config.get('state_portal_abbr', 'Unknown')
+        # Generate and save the report using ReportGenerator
         report_generator = ReportGenerator(self.config, self.results, state_abbr)
         report_generator.generate_report()
 
     def close(self):
         try:
+            # Quit the WebDriver
             self.driver.quit()
             logger.info("Web driver closed successfully.")
         except Exception as e:

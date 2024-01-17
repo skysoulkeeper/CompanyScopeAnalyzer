@@ -116,7 +116,7 @@ However, these enhancements might be considered in the future or perhaps in anot
 ## Notes
 - If you are not located in the United States, you may need to use a VPN or Proxy for the script to function correctly.
 ## Development
-- Created in a couple of hours to automate a tedious manual task.
+- Created to automate a tedious manual task.
 - Tested on Windows and MacOS with Python version 3.12 and 3.9.
 
 ## Disclaimer

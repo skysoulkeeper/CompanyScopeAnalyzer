@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+# Configuration settings for the NJ Portal
 NJ_PORTAL_CONFIG = {
     "url": "https://www.njportal.com/DOR/BusinessNameSearch/Search/Availability",
     "selectors": {
@@ -17,15 +18,17 @@ NJ_PORTAL_CONFIG = {
 }
 
 
+# Define a class for the NJ Portal
 class NJPortal:
     def __init__(self, driver):
         self.driver = driver
 
     def check_availability(self, company_name):
         try:
+            # Navigate to the NJ Portal URL
             self.driver.get(NJ_PORTAL_CONFIG["url"])
             logger.info(f"Accessing NJ portal: {NJ_PORTAL_CONFIG['url']}")
-
+            # Find and interact with elements on the NJ Portal page
             search_input = WebDriverWait(self.driver, 4).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, NJ_PORTAL_CONFIG["selectors"]["search_input"]))
             )
@@ -37,6 +40,8 @@ class NJPortal:
 
             WebDriverWait(self.driver, 4).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, NJ_PORTAL_CONFIG["selectors"]["alert"])))
+
+            # Check for success or error alerts on the NJ Portal page
             if self.driver.find_elements(By.CSS_SELECTOR, NJ_PORTAL_CONFIG["selectors"]["alert_error"]):
                 logger.info(f"Company name '{company_name}' is not available in NJ.")
                 return "Not Available"

@@ -4,6 +4,7 @@ from pathlib import Path
 from utils.logger import logger
 
 
+# Define a class for generating CSV reports
 class CSVReportGenerator:
     def __init__(self, domain_zones: List[str], state: str):
         self.domain_zones = domain_zones
@@ -11,6 +12,7 @@ class CSVReportGenerator:
 
     def _write_header(self, csv_writer, headers: List[str]):
         try:
+            # Write the headers to the CSV file
             csv_writer.writerow(headers)
         except Exception as e:
             logger.error(f"Error while writing CSV header: {e}")
@@ -19,6 +21,7 @@ class CSVReportGenerator:
     def _write_data(self, csv_writer, results: List[List[str]]):
         logger.info("Writing data to CSV")
         try:
+            # Iterate through the results and write data to the CSV file
             for result_lines in results:
                 company_data = [result_lines[0].replace('Company: ', ''), self.state,
                                 result_lines[1].split(': ')[1]]
@@ -39,6 +42,7 @@ class CSVReportGenerator:
         try:
             logger.info(f"Saving CSV report to {report_name}")
             report_path = Path(report_name)
+            # Check if the report name has a file extension, if not, add .csv extension
             if not report_path.suffix:
                 report_path = report_path.with_suffix('.csv')
 
