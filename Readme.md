@@ -4,12 +4,15 @@
 
 ## Overview
 This script is designed to automate the process of checking the availability of company names and associated domains. It simplifies the task of verifying these details across various platforms.
+- At present, the script supports the following state portals:
+- New Jersey (NJ)
 
 ## Features
 - __Company Name Availability Check:__ Determines whether a company name is available or already taken on state Portal.
 - __Domain Name Availability Check:__ Checks the availability of any domains for the company names on NameCheap.
 - __Configurable Checks:__ Allows enabling or disabling the company name and domain name checks via configuration settings.
 - __Proxy Support:__ Provides the ability to configure and use proxy settings for enhanced web scraping and privacy.
+- __Command-Line Argument Support:__ Added support for parsing command-line arguments to customize the execution of the script.
 - Generates a report with the availability status of each company and domain name.
 
 ## Supported formats:
