@@ -12,8 +12,7 @@ from utils.logger import logger
 
 # Define a class for generating reports in various formats
 class ReportGenerator:
-    def __init__(self, config_params: Dict[str, any], results_list: List[List[str]],
-                 state_abbr_param: str):
+    def __init__(self, config_params: Dict[str, any], results_list: List[List[str]],state_abbr_param: str):
         self.config_data = config_params
         self.state_abbr = state_abbr_param
         self.result_data = results_list
@@ -105,8 +104,7 @@ class ReportGenerator:
     def _generate_xml_report(self):
         try:
             logger.info("Generating XML report.")
-            state = self.config_data.get('state_portal_abbr',
-                                         'Unknown')
+            state = self.config_data.get('state_portal_abbr', 'Unknown')
             xml_writer = XMLReportGenerator(str(self.report_filename), state=state)
             modified_data = [
                 [f"Company: {line[0]}",

@@ -5,7 +5,7 @@
 ## Overview
 This script is designed to automate the process of checking the availability of company names and associated domains. It simplifies the task of verifying these details across various platforms.
 - At present, the script supports the following state portals:
-- New Jersey (NJ)
+- __Florida (FL), Georgia (GA), New Jersey (NJ), South Carolina (SC), North Carolina (NC)__
 
 ## Features
 - __Company Name Availability Check:__ Determines whether a company name is available or already taken on state Portal.
@@ -90,6 +90,12 @@ domain_zones:
 ```
 python CompanyScopeAnalyzer.py
 ```
+
+or
+
+```
+python CompanyScopeAnalyzer.py --input data/input/company.txt --report-format xls --output data/reports
+```
 4. __Review the Results:__ Once the script finishes running, check the generated output file in folder __data/reports__ (e.g., __result_08_04_2023.txt__) for the availability status of each company and domain name.
 
 ## How It Works
@@ -118,6 +124,7 @@ However, these enhancements might be considered in the future or perhaps in anot
 
 ## Notes
 - If you are not located in the United States, you may need to use a VPN or Proxy for the script to function correctly.
+- For the FL, GA portals, please specify the exact name of the prospective company. For example, use "APPLE LLC" or "APPLE INC." It is crucial to use the appropriate suffix for the company, such as LLC or INC. By default, a name without a suffix will be processed by appending LLC to it - for instance, "APPLE" will be treated as "APPLE LLC". If you explicitly provide "APPLE INC," then that exact company name will be processed. This specificity is due to the unique structure of some state portals. 🤷
 ## Development
 - Created to automate a tedious manual task.
 - Tested on Windows and MacOS with Python version 3.12 and 3.9.

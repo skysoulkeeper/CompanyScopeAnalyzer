@@ -1,15 +1,12 @@
 # modules/webdriver_setup.py
 import json
 from utils.logger import logger
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+import undetected_chromedriver as uc
 from typing import Dict
 
 
 # Define a function to set up the WebDriver
-def setup_webdriver(config: Dict[str, any]) -> webdriver.Chrome:
+def setup_webdriver(config: Dict[str, any]) -> uc.Chrome:
     # Extract proxy and WebDriver configuration from the provided 'config' dictionary
     proxy_settings = config.get('proxy_settings', {})
     webdriver_config = config.get('webdriver', {})
@@ -19,18 +16,21 @@ def setup_webdriver(config: Dict[str, any]) -> webdriver.Chrome:
     logger.info("WebDriver Configuration: {}", json.dumps(webdriver_config))
 
     # Configure WebDriver options
-    options = Options()
+    options = uc.ChromeOptions()
+    #    options.add_argument("--auto-open-devtools-for-tabs")
+    options.add_argument("--disable-infobars")
+    options.add_argument("--disable-logging")
+    options.add_argument("--disable-login-animations")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-default-apps")
+    options.add_argument("--disable-popup-blocking")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("--disable-notifications")
     options.add_argument("--disable-cache")
     options.add_argument("--disable-cookies")
     options.add_argument("--disable-gpu")
-    options.add_argument("--headless")
     options.add_argument("--blink-settings=imagesEnabled=false")
     options.add_argument("accept-language=en-US,en;q=0.9")
-    options.add_argument("accept-encoding=gzip, deflate, br")
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
 
     # Check if 'webdriver' key exists in the configuration
     if 'webdriver' not in config:
@@ -40,13 +40,18 @@ def setup_webdriver(config: Dict[str, any]) -> webdriver.Chrome:
     webdriver_config = config['webdriver']
     user_agent = webdriver_config.get('user_agent')
     implicit_wait_time = webdriver_config.get('implicit_wait_time')
+    headless_mode = webdriver_config.get('headless', False)
 
     # Check if user agent and implicit wait time are provided
     if user_agent is None or implicit_wait_time is None:
         raise KeyError("Missing required WebDriver configuration parameters.")
 
     # Add user agent to WebDriver options
-    options.add_argument(f"user-agent={user_agent}")
+    options.add_argument("--user-agent=" + user_agent)
+
+    # Retrieve headless mode setting from WebDriver configuration
+    if headless_mode:
+        options.add_argument("--headless")
 
     # Proxy Configuration
     if 'proxy_settings' in config and config['proxy_settings'].get('proxy_enabled'):
@@ -66,8 +71,7 @@ def setup_webdriver(config: Dict[str, any]) -> webdriver.Chrome:
 
     try:
         # Set up the WebDriver using ChromeDriverManager
-        service = Service(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=options)
+        driver = uc.Chrome(options=options)
         driver.implicitly_wait(implicit_wait_time)
     except Exception as e:
         # Handle any exceptions that may occur during WebDriver setup

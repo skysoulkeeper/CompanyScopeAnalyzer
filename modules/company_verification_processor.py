@@ -54,7 +54,7 @@ class CompanyProfileValidator:
         try:
             with open(company_file_path, 'r') as file:
                 # Read company names from the file (up to the specified limit)
-                companies = file.readlines()[:self.company_check_limit]
+                companies = [line.strip() for line in file if line.strip()][:self.company_check_limit]
             lines_count = len(companies)
             logger.info("The number of companies to be processed from the file is: {}", lines_count)
 
@@ -69,7 +69,9 @@ class CompanyProfileValidator:
 
                 if self.company_name_check_enabled:
                     # Check BNS availability for the formatted company name
-                    bns_status = portal.check_availability(portal_formatted_name)
+                    bns_status = portal.check_availability(company_name)
+                    #bns_status = portal.check_availability(portal_formatted_name)
+
                     result_lines.append(f"BNS status: {bns_status}")
 
                 if self.domain_check_enabled:
