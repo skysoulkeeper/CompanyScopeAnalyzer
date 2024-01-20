@@ -1,7 +1,8 @@
 # modules/webdriver_setup.py
 import json
-from utils.logger import logger
 import undetected_chromedriver as uc
+from utils.logger import logger
+from selenium_stealth import stealth
 from typing import Dict
 
 
@@ -17,7 +18,11 @@ def setup_webdriver(config: Dict[str, any]) -> uc.Chrome:
 
     # Configure WebDriver options
     options = uc.ChromeOptions()
-    #    options.add_argument("--auto-open-devtools-for-tabs")
+    options.add_argument("--no-first-run")
+    options.add_argument("--no-default-browser-check")
+    options.add_argument("--start-maximized")
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--auto-open-devtools-for-tabs")
     options.add_argument("--disable-infobars")
     options.add_argument("--disable-logging")
     options.add_argument("--disable-login-animations")
@@ -29,7 +34,7 @@ def setup_webdriver(config: Dict[str, any]) -> uc.Chrome:
     options.add_argument("--disable-cache")
     options.add_argument("--disable-cookies")
     options.add_argument("--disable-gpu")
-    options.add_argument("--blink-settings=imagesEnabled=false")
+#    options.add_argument("--blink-settings=imagesEnabled=false")
     options.add_argument("accept-language=en-US,en;q=0.9")
 
     # Check if 'webdriver' key exists in the configuration
@@ -73,6 +78,17 @@ def setup_webdriver(config: Dict[str, any]) -> uc.Chrome:
         # Set up the WebDriver using ChromeDriverManager
         driver = uc.Chrome(options=options)
         driver.implicitly_wait(implicit_wait_time)
+
+        # Apply selenium-stealth settings
+        stealth(driver,
+                languages=["en-US", "en"],
+                vendor="Google Inc.",
+                platform="Win32",
+                webgl_vendor="Intel Inc.",
+                renderer="Intel Iris OpenGL Engine",
+                fix_hairline=True,
+                )
+
     except Exception as e:
         # Handle any exceptions that may occur during WebDriver setup
         logger.error(f"Error setting up WebDriver: {e}")

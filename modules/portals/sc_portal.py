@@ -8,46 +8,48 @@ from utils.logger import logger
 
 # Configuration settings for the SC Portal
 SC_PORTAL_CONFIG = {
-    "url": "https://businessfilings.sc.gov/BusinessFiling/Entity/Search",
+    "url": "https://businessfilings.sc.gov/BusinessFiling/Entity/Search",  # URL of the SC Business Filing Portal.
     "selectors": {
-        "search_type_dropdown": "select#EntitySearchTypeEnumId",
-        "search_input": "input#SearchTextBox",
-        "submit_button": "button#EntitySearchButton",
-        "name_availability_message": "div#nameAvailabilityDiv p.alert",
-        "recaptcha": "div.g-recaptcha"
+        "search_type_dropdown": "select#EntitySearchTypeEnumId",  # CSS selector for the search type dropdown.
+        "search_input": "input#SearchTextBox",  # CSS selector for the search input.
+        "submit_button": "button#EntitySearchButton",  # CSS selector for the submit button.
+        "name_availability_message": "div#nameAvailabilityDiv p.alert",  # CSS selector for the name availability message.
+        "recaptcha": "div.g-recaptcha"  # CSS selector for the reCAPTCHA element.
     }
 }
 
+
 class SCPortal:
     def __init__(self, driver=None):
-        self.driver = driver if driver is not None else webdriver.Chrome()
-        self.check_count = 0  # Счетчик для отслеживания количества проверок
+        # Constructor for the SCPortal class.
+        self.driver = driver if driver is not None else webdriver.Chrome()  # Initializing the WebDriver.
+        self.check_count = 0  # Counter to track the number of checks performed.
 
     def check_availability(self, company_name):
+        # Method to check the availability of a company name in the SC portal.
         logger.info(f"Checking availability of company name: {company_name}")
         try:
-            # Навигация к SC Portal URL
-            self.driver.get(SC_PORTAL_CONFIG["url"])
-            time.sleep(1)
+            self.driver.get(SC_PORTAL_CONFIG["url"])  # Navigating to the SC Portal URL.
+            time.sleep(1)  # Short pause to ensure page loads properly.
 
-            # Выбор 'Exact Match' из выпадающего списка
+            # Selecting 'Exact Match' from the dropdown menu.
             search_type_select = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, SC_PORTAL_CONFIG["selectors"]["search_type_dropdown"]))
             )
             search_type_select.send_keys("Exact Match")
-            time.sleep(1)
+            time.sleep(1)  # Short pause after selection.
 
-            # Ввод названия компании
+            # Entering the company name into the search input.
             search_input = self.driver.find_element(By.CSS_SELECTOR, SC_PORTAL_CONFIG["selectors"]["search_input"])
             search_input.clear()
             search_input.send_keys(company_name)
-            time.sleep(1)
+            time.sleep(1)  # Short pause after entering the name.
 
-            # Нажатие кнопки поиска
+            # Clicking the search button.
             search_button = self.driver.find_element(By.CSS_SELECTOR, SC_PORTAL_CONFIG["selectors"]["submit_button"])
             search_button.click()
 
-            # Ожидание появления сообщения о доступности
+            # Waiting for the availability message to appear.
             try:
                 WebDriverWait(self.driver, 10).until(
                     EC.visibility_of_element_located((By.CSS_SELECTOR, SC_PORTAL_CONFIG["selectors"]["name_availability_message"]))
@@ -57,7 +59,7 @@ class SCPortal:
                 logger.error("Timeout while waiting for the availability message.")
                 return "Timeout/Error"
 
-            # Проверка сообщения о доступности
+            # Interpreting the availability message.
             if "this name is available" in availability_message:
                 logger.info(f"Company name '{company_name}' is available in SC.")
                 return "Available"
@@ -70,13 +72,11 @@ class SCPortal:
             return "Error"
 
         finally:
-            # Увеличение счетчика проверок
-            self.check_count += 1
+            self.check_count += 1  # Incrementing the check counter.
 
-            # Если проверено 3 компании, закрыть и переоткрыть браузер
+            # Restarting the browser after every 3 checks to avoid potential issues.
             if self.check_count % 3 == 0:
-                self.driver.quit()
-                time.sleep(5)  # Пауза перед перезапуском
-                self.driver = webdriver.Chrome()  # Перезапуск браузера
-
+                self.driver.quit()  # Closing the browser.
+                time.sleep(5)  # Pausing before restarting.
+                self.driver = webdriver.Chrome()  # Restarting the browser.
 

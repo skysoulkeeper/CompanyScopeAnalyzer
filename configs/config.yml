@@ -3,7 +3,7 @@
 # Basic Application Settings
 company_name_check_enabled: True    # Enable or disable company name check
 domain_check_enabled: False          # Enable or disable domain check
-state_portal_abbr: "NC"             # Abbreviation for state portal, e.g., NJ
+state_portal_abbr: "MD"             # Abbreviation for state portal, e.g., NJ
 namecheap_search_url: "https://www.namecheap.com/domains/registration/results/?domain="
 domain_check_limit: 1               # Maximum number of domain zones to be checked
 domain_zones:
