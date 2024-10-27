@@ -1,4 +1,16 @@
-# modules/webdriver_setup.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/webdriver_setup.py
+
+Description:
+This module provides a function to set up the Selenium WebDriver using
+undetected-chromedriver. It configures the WebDriver with options like user agent,
+proxy settings, and stealth mode, based on the provided configuration.
+"""
+
 import json
 import undetected_chromedriver as uc
 from utils.logger import logger

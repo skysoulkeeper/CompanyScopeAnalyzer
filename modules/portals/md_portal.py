@@ -1,4 +1,16 @@
-# modules/portals/md_portal.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/portals/md_portal.py
+
+Description:
+This module defines the MDPortal class, which interacts with the Maryland Business Express
+Entity Search portal to check the availability of company names. It automates the search process
+using Selenium WebDriver and simulates human-like typing for input fields.
+"""
+
 import time
 
 from selenium.webdriver import ActionChains

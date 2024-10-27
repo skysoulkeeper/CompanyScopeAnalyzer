@@ -1,4 +1,16 @@
-# modules/company_verification_processor.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/company_verification_processor.py
+
+Description:
+This module defines the CompanyProfileValidator class, which handles the
+validation of company profiles. It processes company names, checks domain
+availability, and generates reports based on configuration settings.
+"""
+
 from pathlib import Path
 from datetime import datetime
 from .webdriver_setup import setup_webdriver

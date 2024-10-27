@@ -1,4 +1,16 @@
-# CompanyScopeAnalyzer.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: app.py
+
+Description:
+This module serves as the main entry point for analyzing company profiles. It handles
+configuration loading, directory initialization, and running company profile verification.
+It also supports running unit tests if specified by the user.
+"""
+
 import time
 from pathlib import Path
 from utils.logger import setup_logger, logger

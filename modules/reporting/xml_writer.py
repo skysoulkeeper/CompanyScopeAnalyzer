@@ -1,4 +1,16 @@
-# modules/reporting/xml_writer.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/reporting/xml_writer.py
+
+Description:
+This module defines the XMLReportGenerator class, which generates XML reports based on the provided data.
+It creates an XML file with structured elements representing company information, including domain status
+and business name status.
+"""
+
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import List

@@ -1,4 +1,16 @@
-# modules/reporting/json_writer.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/reporting/json_writer.py
+
+Description:
+This module defines the JSONReportGenerator class, which handles the creation of
+JSON reports. It allows adding data as dictionaries to an internal list and
+saves the list to a JSON file with proper formatting.
+"""
+
 import json
 from pathlib import Path
 from utils.logger import logger

@@ -1,4 +1,16 @@
-# utils/config_loader.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: utils/config_loader.py
+
+Description:
+This module defines the ConfigLoader class, which loads configuration settings
+from a specified YAML file. It handles errors related to file access and YAML
+parsing, logging appropriate messages for troubleshooting.
+"""
+
 from typing import Dict
 from pathlib import Path
 import yaml

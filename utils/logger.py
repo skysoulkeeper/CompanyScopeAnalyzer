@@ -1,4 +1,16 @@
-# utils/logger.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: utils/logger.py
+
+Description:
+This module sets up a customized logger using the Loguru library. It supports
+JSON serialization of log records, console and file logging, rotation, and retention
+based on the provided configuration.
+"""
+
 import sys
 import json
 from loguru import logger

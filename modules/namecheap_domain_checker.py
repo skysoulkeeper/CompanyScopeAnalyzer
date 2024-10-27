@@ -1,4 +1,17 @@
-# modules/namecheap_domain_checker.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/namecheap_domain_checker.py
+
+Description:
+This module defines the DomainAvailabilityChecker class, which checks the
+availability of domains on Namecheap using a Selenium WebDriver. It interacts
+with the Namecheap website, processes search results, and returns the domain
+status.
+"""
+
 import time
 from utils.logger import logger
 from selenium.common.exceptions import NoSuchElementException, TimeoutException

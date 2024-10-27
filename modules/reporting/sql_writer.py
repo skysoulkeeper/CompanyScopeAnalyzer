@@ -1,4 +1,16 @@
-# modules/reporting/sql_writer.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/reporting/sql_writer.py
+
+Description:
+This module defines the SQLReportGenerator class, which generates SQL reports based
+on the provided results. It formats the results into SQL INSERT statements, handling
+company names, business name status, and domain data.
+"""
+
 from utils.logger import logger
 from typing import List
 

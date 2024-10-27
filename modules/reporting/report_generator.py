@@ -1,4 +1,16 @@
-# modules/reporting/report_generator.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/reporting/report_generator.py
+
+Description:
+This module defines the ReportGenerator class, which handles the creation of reports
+in various formats, including XLS, CSV, JSON, XML, TXT, and SQL. It generates reports
+based on the configuration parameters and processed results.
+"""
+
 from pathlib import Path
 from typing import Dict, List
 from datetime import datetime

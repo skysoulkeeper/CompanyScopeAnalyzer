@@ -1,4 +1,16 @@
-# modules/portals/ga_portal.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/portals/ga_portal.py
+
+Description:
+This module defines the GAPortal class, which interacts with the Georgia eCorp Portal to check
+the availability of company names. It uses Selenium WebDriver to automate the search process
+and retrieve company statuses from the portal.
+"""
+
 from utils.logger import logger
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait

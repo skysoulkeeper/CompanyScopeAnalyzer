@@ -1,4 +1,15 @@
-# modules/reporting/xls_writer.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/reporting/xls_writer.py
+
+Description:
+This module defines the XLSReportGenerator class, which generates Excel reports using the xlwt library.
+It handles custom styling, writing data to the worksheet, and saving the workbook in the .xls format.
+"""
+
 import xlwt
 from typing import List
 from pathlib import Path

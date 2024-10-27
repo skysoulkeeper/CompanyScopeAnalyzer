@@ -1,4 +1,16 @@
-# modules/company_name_formatter.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/company_name_formatter.py
+
+Description:
+This module provides functions to format company names for domain name generation
+and for specific portal naming conventions. It removes common legal suffixes and
+non-alphanumeric characters to ensure compatibility with various formats.
+"""
+
 import re
 from utils.logger import logger
 

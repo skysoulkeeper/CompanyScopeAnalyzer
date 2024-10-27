@@ -1,3 +1,16 @@
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/reporting/csv_report_generator.py
+
+Description:
+This module defines the CSVReportGenerator class, which handles the creation of
+CSV reports. It writes headers and data to a CSV file based on the provided results
+and supports dynamic data formatting for domain availability checks.
+"""
+
 import csv
 from typing import List
 from pathlib import Path

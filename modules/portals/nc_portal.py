@@ -1,4 +1,17 @@
-# modules/portals/nc_portal.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/portals/nc_portal.py
+
+Description:
+This module defines the NCPortal class, which interacts with the North Carolina
+Business Search portal to check the availability of company names. It automates
+the search process using Selenium WebDriver by selecting specific search criteria
+and processing the results.
+"""
+
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC

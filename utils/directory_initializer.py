@@ -1,4 +1,16 @@
-# utils/directory_initializer.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: utils/directory_initializer.py
+
+Description:
+This module provides a function to initialize directories needed for the application.
+It creates directories from a provided list, logs the creation process, and handles
+any errors that occur during directory initialization.
+"""
+
 from utils.logger import logger
 from pathlib import Path
 from typing import List

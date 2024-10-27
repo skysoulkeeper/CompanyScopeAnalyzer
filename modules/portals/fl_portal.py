@@ -1,4 +1,16 @@
-# modules/portals/fl_portal.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/portals/fl_portal.py
+
+Description:
+This module defines the FLPortal class, which interacts with the Florida Sunbiz Portal to check
+the availability of company names. It uses Selenium WebDriver to automate the search and extraction
+of company statuses from the portal.
+"""
+
 from utils.logger import logger
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait

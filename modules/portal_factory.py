@@ -1,4 +1,16 @@
-# modules/portal_factory.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/portal_factory.py
+
+Description:
+This module provides a function to dynamically retrieve a portal class based on
+the state abbreviation. It uses Python's importlib to load the corresponding module
+and return the appropriate class for handling portal-specific logic.
+"""
+
 import importlib
 
 

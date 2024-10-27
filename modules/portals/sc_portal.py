@@ -1,3 +1,17 @@
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/portals/sc_portal.py
+
+Description:
+This module defines the SCPortal class, which interacts with the South Carolina
+Business Filing portal to check the availability of company names.
+The module automates the search process using Selenium WebDriver, processes
+the results, and manages browser instances to maintain session integrity.
+"""
+
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC

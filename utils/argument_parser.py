@@ -1,4 +1,16 @@
-# utils/argument_parser.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: utils/argument_parser.py
+
+Description:
+This module defines the ArgumentParser class, which handles the parsing of command-line
+arguments for the Company Scope Analyzer. It supports various options such as configuration
+paths, report formats, logging levels, and feature toggles for domain and company checks.
+"""
+
 import argparse
 from pathlib import Path
 from utils.logger import logger

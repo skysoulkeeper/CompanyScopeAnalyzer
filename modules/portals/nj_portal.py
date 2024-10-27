@@ -1,4 +1,17 @@
-# modules/portals/nj_portal.py
+# MIT License
+# Copyright (c) 2024 skysoulkeeper
+# See LICENSE file for more details.
+
+"""
+Module: modules/portals/nj_portal.py
+
+Description:
+This module defines the NJPortal class, which interacts with the New Jersey
+Business Name Search portal to check the availability of company names.
+The module automates the search process using Selenium WebDriver and processes
+the results to determine name availability.
+"""
+
 from utils.logger import logger
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
